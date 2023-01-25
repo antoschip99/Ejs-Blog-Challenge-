@@ -16,10 +16,12 @@ app.set('view engine', 'ejs');
 app.use(express.static("public"));
 app.use(express.urlencoded({extended:true}));
 
+//////////////////////////////////////////
+let posts = [];
 
-///////////////// app. get per le pagine contact, home , about ///////////////////
+///////////////// app. get per le pagine contact, home , about , compose ///////////////////
 app.get("/", (req, res) => {
-  res.render("home", {homeContent: homeStartingContent});
+  res.render("home", {startingContent: homeStartingContent, posts: posts});
 });
 
 app.get('/about', (req, res) => {
@@ -30,6 +32,22 @@ app.get('/contact', (req, res) => {
   res.render('contact', {contactcontent: contactContent});
 });
 
+app.get('/compose', (req, res) => {
+  res.render('compose');
+});
+
+///////////////////////////////////////////////////////////////////////////////////
+
+app.post("/compose", (req, res) => {
+  
+  const post = {
+    title:req.body.postTitle,
+    content:req.body.postBody
+  };
+  
+  posts.push(post);
+  res.redirect("/");
+});
 
 
 
